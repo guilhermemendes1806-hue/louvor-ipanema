@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louvor Ipanema</title>
+    <style>
+        /* Reset básico para não sobrar espaços em branco */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; }
+    </style>
+</head>
+<body>
+
+<div id="tela-login" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; font-family: sans-serif;">
+    <h1 style="color: #002366; margin-bottom: 30px;">LOUVOR IPANEMA</h1>
+    <input type="text" id="login-nome" placeholder="Seu Nome" style="padding: 15px; border: 1px solid #002366; border-radius: 8px; width: 80%; max-width: 300px; margin-bottom: 15px; background: #F8F9FA; font-size: 16px;">
+    <input type="password" id="login-senha" placeholder="Senha do Ministério" style="padding: 15px; border: 1px solid #002366; border-radius: 8px; width: 80%; max-width: 300px; margin-bottom: 20px; background: #F8F9FA; font-size: 16px;">
+    <button onclick="verificarAcesso()" style="background: #002366; color: white; border: none; padding: 15px 40px; border-radius: 8px; font-weight: bold; width: 80%; max-width: 300px; cursor: pointer;">ENTRAR</button>
+    <p id="msg-erro" style="color: #ff4444; margin-top: 15px; display: none; font-weight: bold;">⚠️ Nome ou Senha incorretos!</p>
+</div>
+
+<div id="menu-lateral" style="position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: #002366; z-index: 1000; transition: 0.3s; padding-top: 60px; color: white; font-family: sans-serif;">
+    <button onclick="fecharMenu()" style="background:none; border:none; color:white; font-size: 1.5em; position: absolute; top: 20px; right: 20px;">✕</button>
+    <ul style="list-style: none; padding: 0;">
+        <li onclick="irPara('repertorio')" style="padding: 20px; border-bottom: 1px solid #004080; cursor: pointer;">🎵 Repertório</li>
+    </ul>
+</div>
+
+<div id="sistema-principal" style="display: none; font-family: sans-serif;">
+    <header style="background: #002366; color: white; padding: 20px; text-align: center; position: relative;">
+        <div onclick="abrirMenu()" style="position: absolute; top: 25px; left: 20px; cursor: pointer;">
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+        </div>
+        <h1 style="margin: 0; font-size: 1.5em;">LOUVOR IPANEMA</h1>
+    </header>
+    
+    <div style="padding: 20px;">
+        <h2 id="texto-boas-vindas" style="color: #002366;">Olá! 👋</h2>
+
+        <div style="background: #F0F4F8; border-left: 5px solid #002366; padding: 15px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <strong style="color: #002366; font-size: 0.85em; text-transform: uppercase;">📅 Agenda de Ensaios</strong>
+            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #D1D9E6; padding-bottom: 5px;">
+                    <span>Domingo</span> <strong>19:00h</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #D1D9E6; padding-bottom: 5px;">
+                    <span>Sexta-Feira</span> <strong>19:30h</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Sábado</span> <strong>08:00h</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="secao-repertorio" style="display: none; padding: 20px; font-family: sans-serif; background: #FFFFFF; min-height: 100vh;">
+    <button onclick="voltarParaHome()" style="background: none; border: none; color: #002366; font-weight: bold; margin-bottom: 20px; cursor: pointer;">⬅ VOLTAR PARA O MENU</button>
+    <h2 style="color: #002366;">🎵 Repertório</h2>
+
+    <div style="background: white; border: 1px solid #D1D9E6; border-left: 6px solid #002366; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <div>
+                <strong>Medley: Reina em mim / Ele é exaltado</strong>
+                <p style="font-size: 0.8em; color: #888;">Vineyard / Adhemar de Campos</p>
+            </div>
+            <span style="background: #002366; color: white; padding: 5px; border-radius: 5px; font-size: 0.8em;">TOM: G</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <a href="#" style="text-decoration: none; background: #F8F9FA; border: 1px solid #002366; color: #002366; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.8em;">📄 LETRA</a>
+            <a href="#" style="text-decoration: none; background: #F8F9FA; border: 1px solid #002366; color: #002366; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.8em;">🎤 VOCAL</a>
+            <a href="#" style="text-decoration: none; background: #FF0000; color: white; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.8em; grid-column: span 2;">▶️ INSPIRAÇÃO</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function verificarAcesso() {
+        const SENHA_MESTRE = "Ipanema0407";
+        let nome = document.getElementById('login-nome').value.trim();
+        let senha = document.getElementById('login-senha').value;
+        
+        if (nome !== "" && senha === SENHA_MESTRE) {
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('sistema-principal').style.display = 'block';
+            document.getElementById('texto-boas-vindas').innerText = "Olá, " + nome + "! 👋";
+        } else {
+            document.getElementById('msg-erro').style.display = 'block';
+        }
+    }
+
+    function abrirMenu() { document.getElementById('menu-lateral').style.left = "0px"; }
+    function fecharMenu() { document.getElementById('menu-lateral').style.left = "-250px"; }
+
+    function irPara(pagina) {
+        fecharMenu();
+        if(pagina === 'repertorio') { abrirRepertorio(); }
+    }
+
+    function abrirRepertorio() {
+        document.getElementById('sistema-principal').style.display = 'none';
+        document.getElementById('secao-repertorio').style.display = 'block';
+    }
+
+    function voltarParaHome() {
+        document.getElementById('secao-repertorio').style.display = 'none';
+        document.getElementById('sistema-principal').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
