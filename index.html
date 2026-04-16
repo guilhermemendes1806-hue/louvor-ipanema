@@ -11,29 +11,125 @@
     <link rel="apple-touch-icon" href="https://img.icons8.com/color/512/music-notation.png">
 
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; font-family: sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; font-family: sans-serif; background: #FFFFFF; }
+        input:focus { border-color: #004080 !important; outline: none; box-shadow: 0 0 5px rgba(0, 64, 128, 0.5); }
     </style>
 </head>
 <body>
 
 <div id="menu-lateral" style="position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: #002366; z-index: 1000; transition: 0.3s; padding-top: 60px; color: white;">
-    <button onclick="fecharMenu()" style="background:none; border:none; color:white; font-size: 1.5em; position: absolute; top: 20px; right: 20px;">✕</button>
+    <button onclick="fecharMenu()" style="background:none; border:none; color:white; font-size: 1.5em; position: absolute; top: 20px; right: 20px; cursor: pointer;">✕</button>
     <ul style="list-style: none; padding: 0;">
-        <li style="padding: 20px; border-bottom: 1px solid #004080; cursor: pointer;">🎵 Repertório</li>
-        <li style="padding: 20px; border-bottom: 1px solid #004080; cursor: pointer;">📅 Escala de Maio</li>
+        <li style="padding: 20px; border-bottom: 1px solid #004080; cursor: pointer; hover: background-color: #001a4d;">🎵 Repertório</li>
+        <li style="padding: 20px; border-bottom: 1px solid #004080; cursor: pointer; hover: background-color: #001a4d;">📅 Escala</li>
     </ul>
 </div>
 
 <div id="tela-login" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
-    <h1 style="color: #002366; margin-bottom: 30px;">LOUVOR IPANEMA</h1>
+    <h1 style="color: #002366; margin-bottom: 30px; font-weight: bold;">LOUVOR IPANEMA</h1>
     
     <div style="width: 80%; max-width: 300px; margin-bottom: 15px;">
-        <input type="email" id="login-nome" placeholder="Seu E-mail" style="padding: 15px; border: 1px solid #002366; border-radius: 8px; width: 100%; background: #F8F9FA; font-size: 16px; box-sizing: border-box; outline: none;">
+        <input type="email" id="login-nome" placeholder="Seu E-mail" style="padding: 15px; border: 2px solid #002366; border-radius: 8px; width: 100%; background: #F8F9FA; font-size: 16px; box-sizing: border-box;">
     </div>
     
     <div style="position: relative; width: 80%; max-width: 300px; margin-bottom: 20px;">
-        <input type="password" id="login-senha" placeholder="Sua Senha" style="padding: 15px; border: 1px solid #002366; border-radius: 8px; width: 100%; background: #F8F9FA; font-size: 16px; box-sizing: border-box; outline: none;">
-        <div onclick="toggleSenha()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+        <input type="password" id="login-senha" placeholder="Sua Senha" style="padding: 15px; border: 2px solid #002366; border-radius: 8px; width: 100%; background: #F8F9FA; font-size: 16px; box-sizing: border-box;">
+        <div onclick="toggleSenha()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;">
+            <svg id="icone-olho" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#002366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        </div>
+    </div>
+
+    <button onclick="verificarAcesso()" style="background: #002366; color: white; border: none; padding: 15px 40px; border-radius: 8px; font-weight: bold; width: 80%; max-width: 300px; cursor: pointer; font-size: 16px;">ENTRAR</button>
+    <p id="msg-erro" style="color: #ff4444; margin-top: 15px; display: none; font-weight: bold; text-align: center; width: 80%;">⚠️ Verifique os dados e o domínio!</p>
+</div>
+
+<div id="sistema-principal" style="display: none;">
+    <header style="background: #002366; color: white; padding: 20px; text-align: center; position: relative;">
+        <div onclick="abrirMenu()" style="position: absolute; top: 25px; left: 20px; cursor: pointer;">
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+            <div style="width: 25px; height: 3px; background: white; margin: 5px 0;"></div>
+        </div>
+        <h1 style="margin: 0; font-size: 1.5em; font-weight: bold;">LOUVOR IPANEMA</h1>
+    </header>
+    <div style="padding: 20px; text-align: center;">
+        <h2 style="color: #002366; font-weight: bold;">Bem-vindo ao sistema! 👋</h2>
+        <p>Você está logado com sucesso.</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Dados oficiais do seu print
+    const firebaseConfig = {
+        apiKey: "AIzaSyC-S-HidcLNwErpn9LkBcgSifreKQEbbo",
+        authDomain: "louvor-ipanema.firebaseapp.com",
+        projectId: "louvor-ipanema",
+        storageBucket: "louvor-ipanema.firebasestorage.app",
+        messagingSenderId: "501679613996",
+        appId: "1:501679613996:web:59d6b3b59e2607a2280989",
+        measurementId: "G-K71K6QZQ1Z"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.verificarAcesso = function() {
+        const emailField = document.getElementById('login-nome');
+        const email = emailField.value.trim();
+        const senha = document.getElementById('login-senha').value;
+        const msgErro = document.getElementById('msg-erro');
+
+        // Mostra o erro se o e-mail estiver em branco ou com espaço
+        if (!email) {
+            msgErro.style.display = 'block';
+            msgErro.innerText = "⚠️ Digite o e-mail!";
+            return;
+        }
+
+        signInWithEmailAndPassword(auth, email, senha)
+            .then(() => {
+                document.getElementById('tela-login').style.display = 'none';
+                document.getElementById('sistema-principal').style.display = 'block';
+            })
+            .catch((error) => {
+                console.error(error.code);
+                msgErro.style.display = 'block';
+                // Adicionamos um alert para nos falar o erro real
+                alert("Erro do Firebase: " + error.code);
+                if (error.code === 'auth/wrong-password') {
+                  msgErro.innerText = "⚠️ Senha incorreta!";
+                } else if (error.code === 'auth/user-not-found') {
+                  msgErro.innerText = "⚠️ Usuário não encontrado!";
+                } else {
+                  msgErro.innerText = "⚠️ Erro no login: " + error.code;
+                }
+            });
+    };
+
+    window.toggleSenha = function() {
+        const campoSenha = document.getElementById('login-senha');
+        const iconeOlho = document.getElementById('icone-olho');
+        if (campoSenha.type === "password") {
+            campoSenha.type = "text";
+            iconeOlho.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+        } else {
+            campoSenha.type = "password";
+            iconeOlho.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+        }
+    };
+
+    window.abrirMenu = () => document.getElementById('menu-lateral').style.left = "0px";
+    window.fecharMenu = () => document.getElementById('menu-lateral').style.left = "-250px";
+</script>
+
+</body>
+</html>
             <svg id="icone-olho" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#002366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
