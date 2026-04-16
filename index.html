@@ -62,12 +62,13 @@
 </div>
 
 <script type="module">
+    // USAMOS VERSÕES CDN PARA FUNCIONAR NO NAVEGADOR
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // Dados oficiais do seu print
+    // Dados oficiais do seu projeto (que você me mandou)
     const firebaseConfig = {
-        apiKey: "AIzaSyC-S-HidcLNwErpn9LkBcgSifreKQEbbo",
+        apiKey: "AIzaSyC-S-HidcLNwErpn9LkBcgqSifreKQEbbo", // <--- CONFERE SE É ESSA MESMO!
         authDomain: "louvor-ipanema.firebaseapp.com",
         projectId: "louvor-ipanema",
         storageBucket: "louvor-ipanema.firebasestorage.app",
@@ -106,6 +107,8 @@
                   msgErro.innerText = "⚠️ Senha incorreta!";
                 } else if (error.code === 'auth/user-not-found') {
                   msgErro.innerText = "⚠️ Usuário não encontrado!";
+                } else if (error.code === 'auth/api-key-not-valid') {
+                  msgErro.innerText = "⚠️ API Key inválida no código!";
                 } else {
                   msgErro.innerText = "⚠️ Erro no login: " + error.code;
                 }
@@ -117,16 +120,5 @@
         const iconeOlho = document.getElementById('icone-olho');
         if (campoSenha.type === "password") {
             campoSenha.type = "text";
-            iconeOlho.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-        } else {
-            campoSenha.type = "password";
-            iconeOlho.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
-        }
-    };
-
-    window.abrirMenu = () => document.getElementById('menu-lateral').style.left = "0px";
-    window.fecharMenu = () => document.getElementById('menu-lateral').style.left = "-250px";
-</script>
-
-</body>
-</html>
+            iconeOlho.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4
+    
